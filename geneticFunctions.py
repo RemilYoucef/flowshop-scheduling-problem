@@ -10,7 +10,7 @@ def calc_makespan(solution, proccessing_time, number_of_jobs, number_of_machines
     # list for the time passed until the finishing of the job
     cost = [0] * number_of_jobs
     # for each machine, total time passed will be updated
-    for machine_no in range(0, number_of_machines):
+    for machine_no in range(number_of_machines):
         for slot in range(number_of_jobs):
             # time passed so far until the task starts to process
             cost_so_far = cost[slot]
@@ -70,8 +70,8 @@ def mutation(solution):
 def select_parent(population, processing_time, number_of_jobs, number_of_machines):
     parent_pairs = []
     # randomly choose how many parent pairs will be selected
-    parent_pair_count = random.randint(2, int(len(population)/2))
-    for k in range(parent_pair_count):
+    parent_pair_count = random.randint(2, len(population) // 2)
+    for _ in range(parent_pair_count):
         parent1 = binary_tournament(number_of_jobs, number_of_machines, population, processing_time)
         parent2 = binary_tournament(number_of_jobs, number_of_machines, population, processing_time)
         if parent1 != parent2 and (parent1, parent2) not in parent_pairs:
@@ -83,11 +83,7 @@ def binary_tournament(number_of_jobs, number_of_machines, population, processing
     candidates = random.sample(population, 2)
     makespan1 = calc_makespan(candidates[0], processing_time, number_of_jobs, number_of_machines)
     makespan2 = calc_makespan(candidates[1], processing_time, number_of_jobs, number_of_machines)
-    if makespan1 < makespan2:
-        parent = candidates[0]
-    else:
-        parent = candidates[1]
-    return parent
+    return candidates[0] if makespan1 < makespan2 else candidates[1]
 
 def update_population(population, children,processing_time,no_of_jobs,no_of_machines):
     costed_population = []
