@@ -51,6 +51,7 @@ def jobs_to_gantt_fig(scheduled_jobs, nb_machines, nb_jobs):
         Plotly.figure: a plotly figure for generated gantt chart
     """
     def r(): return np.random.randint(0, 256, dtype=int)
+
     colors = ['#%02X%02X%02X' % (r(), r(), r()) for _ in range(nb_jobs)]
 
     tasks = []
@@ -58,7 +59,7 @@ def jobs_to_gantt_fig(scheduled_jobs, nb_machines, nb_jobs):
     zipped_jobs_list = list(zip(*scheduled_jobs))
     for job in zipped_jobs_list:
         job = list(job)
-        for m_id in range(0, nb_machines):
+        for m_id in range(nb_machines):
             start_t = (datetime.timedelta(
                 minutes=int(job[m_id]['start_time'])) + curr_date).strftime("%Y-%m-%d %H:%M:%S")
             finish_t = (datetime.timedelta(
